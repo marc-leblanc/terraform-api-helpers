@@ -2,6 +2,11 @@
 
 # Helper script for setting variables on TFE/TF Cloud via API. 
 #
+# This script can:
+#       - set Terraform variables on a workspace
+#       - set variable descriptions
+#       - set the variable to sensitive
+#
 # Required environment variables:
 # TFE_ADDRESS = TFE Hostname
 # TFE_API_TOKEN = Your user or Team API token as generated from TFE
@@ -72,20 +77,25 @@ workspace_id=`curl \
 # Loop over KV file
 while read line; do
   
-  set -- `echo $line | tr '=' ' '`
+  set -- `echo $line | tr ',' ' '`
+vars=$1
+sensitive=$2
+description=$3
 
-  echo $1 $2
+set -- `echo $vars | tr '=' ' '`
+key=$1
+value=$2
 
   payload="{
   \"data\": {
     \"type\":\"vars\",
     \"attributes\": {
-      \"key\":\"$1\",
-      \"value\":\"$2\",
-      \"description\":\"some description\",
+      \"key\":\"$key\",
+      \"value\":\"$value\",
+      \"description\":\"$description\",
       \"category\":\"terraform\",
       \"hcl\":false,
-      \"sensitive\":false
+      \"sensitive\":$sensitive
     },
     \"relationships\": {
       \"workspace\": {

@@ -16,4 +16,16 @@ export TFE_API_TOKEN=***************************
 
 **Key Value File**
 
-This is a simple implementation. Simply have 1 key = 1 value per line. [Sample](kv_sample.txt)
+In the form of 
+```
+var=value,sensitive(true|false),some description
+foo=bar,true,this variable is sensitive
+bar=foo,false,this variable is not sensitive
+```
+
+[Example File](kv_sample.txt)
+
+## To Do (or not)
+- input validation
+- Variable types to allow setting Environment variables
+- Checking if the variables already exist or not
