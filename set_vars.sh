@@ -107,11 +107,13 @@ value=$2
     }
   }
 }"
-
-curl \
+echo "Creating variable $key. Result: "
+echo ""
+curl -s \
   --header "Authorization: Bearer $TFE_API_TOKEN" \
   --header "Content-Type: application/vnd.api+json" \
   --request POST \
   --data "$payload" \
   https://$TFE_ADDRESS/api/v2/vars
+  echo ""
 done < $f 
