@@ -77,13 +77,13 @@ workspace_id=`curl \
 # Loop over KV file
 while read line; do
   # Parse out values by comma 
-  set -- `echo $line | tr ',' ' '`
+  set -- `echo $line | tr ' ' '****' | tr ',' " "`
   vars=$1
   sensitive=$2
-  description=$3
+  description=`echo $3 |tr '****' ' '`
   
   # Split the Variable/Value
-  set -- `echo $vars | tr '=' ' '`
+  set -- `echo $vars | tr '=' " "`
   key=$1
   value=$2
 

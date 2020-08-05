@@ -1,2 +1,2 @@
-voo=doo,true,sensitive variable
-doo=voo,false,not sensivite variable
+foo=bar,true,sensitive variable description
+bar=foo,false,not sensivite variable description
