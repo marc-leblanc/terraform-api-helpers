@@ -76,16 +76,18 @@ workspace_id=`curl \
 
 # Loop over KV file
 while read line; do
-  
+  # Parse out values by comma 
   set -- `echo $line | tr ',' ' '`
-vars=$1
-sensitive=$2
-description=$3
+  vars=$1
+  sensitive=$2
+  description=$3
+  
+  # Split the Variable/Value
+  set -- `echo $vars | tr '=' ' '`
+  key=$1
+  value=$2
 
-set -- `echo $vars | tr '=' ' '`
-key=$1
-value=$2
-
+  # Create they API payload
   payload="{
   \"data\": {
     \"type\":\"vars\",
