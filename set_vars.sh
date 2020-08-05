@@ -77,15 +77,16 @@ workspace_id=`curl \
 # Loop over KV file
 while read line; do
   # Parse out values by comma 
-  set -- `echo $line | tr ' ' '****' | tr ',' " "`
+  #set -- `echo $line | tr ' ' '****' | tr ',' " "`
+  set -- `echo $line | sed 's/ /+++++/g' | tr ',' " "`
   vars=$1
   sensitive=$2
-  description=`echo $3 |tr '****' ' '`
+  description=`echo $3 |sed 's/+++++/ /g'`
   
   # Split the Variable/Value
   set -- `echo $vars | tr '=' " "`
   key=$1
-  value=$2
+  value=`echo $2|sed 's/+++++/ /g'`
 
   # Create they API payload
   payload="{
