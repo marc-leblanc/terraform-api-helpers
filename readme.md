@@ -29,3 +29,5 @@ bar=foo,false,this variable is not sensitive
 - input validation
 - Variable types to allow setting Environment variables
 - Checking if the variables already exist or not
+- Error tracking 
+- Add option to create new/update variables. This currently will error on variables that already exist
