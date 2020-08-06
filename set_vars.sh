@@ -53,19 +53,19 @@ shift $((OPTIND -1))
 
 # Check for the TFE Address env variable. Die if not set.
 if [[ -z "${TFE_ADDRESS}" ]]; then
-   echo "Please set TFE_ADDRESS environment variable"
+   printf "Please set TFE_ADDRESS environment variable \n"
    exit
 fi
 
 # Check for the TFE API Token env ariable. Die if not set.
 if [[ -z "${TFE_API_TOKEN}" ]]; then
-   echo "Please set the TFE_API_TOKEN environment variable"
+   printf "Please set the TFE_API_TOKEN environment variable \n"
    exit
 fi
 
 # Check for the TFE Organization env ariable. Die if not set.
 if [[ -z "${TFE_ORGANIZATION}" ]]; then
-   echo "Please set the TFE_API_TOKEN environment variable"
+   printf "Please set the TFE_API_TOKEN environment variable \n"
    exit
 fi
 
@@ -76,9 +76,11 @@ workspace_id=`curl \
   --header "Content-Type: application/vnd.api+json" \
   https://$TFE_ADDRESS/api/v2/organizations/$TFE_ORGANIZATION/workspaces/$w |tac |tac |jq -r '.data.id'`
 
+
+
 # Check if we got a workspace ID back
-if [[ -z $workspace_id ]] ; then  
-    echo "Workspace $w could not be found in $TFE_ORGANIZATION. Plase double check the workspace name, organization name and access"
+if [[ $workspace_id == 'null' ]] ; then  
+    printf "Workspace $w could not be found in $TFE_ORGANIZATION. Plase double check the workspace name, organization name and access \n"
     exit
 fi
 
@@ -135,8 +137,8 @@ while read line; do
     }
   }
 }"
-echo "Creating variable $key. Result: "
-echo ""
+printf "Creating variable $key. \n Result: \n"
+
 curl -s \
   --header "Authorization: Bearer $TFE_API_TOKEN" \
   --header "Content-Type: application/vnd.api+json" \
