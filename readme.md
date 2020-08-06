@@ -19,6 +19,9 @@ export TFE_API_TOKEN=***************************
 In the form of 
 ```
 variable_name([a-z][A-Z][0-9]),value,sensitive(true|false),category(terraform|env),description(string)
+```
+Example: 
+```
 foo,bar,true,terraform,sensitive terraform variable description
 bar,foo,false,env,not sensivite  environment variable description
 bard,food,false,env,not sensivite variable description
