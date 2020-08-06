@@ -21,6 +21,8 @@ set -u
 
 w=""
 f="" 
+error=0
+error_descrip=""
 
 # Get Options 
 # w = workspace name
@@ -74,21 +76,44 @@ workspace_id=`curl \
   --header "Content-Type: application/vnd.api+json" \
   https://$TFE_ADDRESS/api/v2/organizations/$TFE_ORGANIZATION/workspaces/$w |tac |tac |jq -r '.data.id'`
 
-# Loop over KV file
+# Check if we got a workspace ID back
+if [[ -z $workspace_id ]] ; then  
+    echo "Workspace $w could not be found in $TFE_ORGANIZATION. Plase double check the workspace name, organization name and access"
+    exit
+fi
+
+# Loop over csv file
 while read line; do
-  # Parse out values by comma 
-  #set -- `echo $line | tr ' ' '****' | tr ',' " "`
+  # Parse out values by comma, preserve spaces with +++++ string substitution 
   set -- `echo $line | sed 's/ /+++++/g' | tr ',' " "`
-  vars=$1
-  sensitive=$2
-  description=`echo $3 |sed 's/+++++/ /g'`
   
-  # Split the Variable/Value
-  set -- `echo $vars | tr '=' " "`
   key=$1
-  value=`echo $2|sed 's/+++++/ /g'`
+  value=$2
+  sensitive=$3
+  category=$4
+  description=`echo $5 |sed 's/+++++/ /g'` #change +++++ back to spaces
+
+  # Data Validation
+  if [[ $key =~ ['!@#$%^&*()_+'] ]]; then
+    error=1
+    error_descrip+=" - 'Key' must not contain special characters \n"
+  fi
+
+  if [[ $sensitive != 'true' ]] && [[ $sensitive != 'false' ]] ; then
+    error=1
+    error_descrip+=" - 'Sensitive' must be either (true|false) \n"
+  fi
+
+  if [[ $category != 'terraform' ]] && [[ $category != 'env' ]] ; then
+    error=1
+    error_descrip+="'Category' must be either ('env'|'terraform') \n"
+  fi
 
   # Create they API payload
+  if [[ $error -ne 0 ]]; then
+    printf "Error on key $key: \n$error_descrip \n"
+  else
+
   payload="{
   \"data\": {
     \"type\":\"vars\",
@@ -96,7 +121,7 @@ while read line; do
       \"key\":\"$key\",
       \"value\":\"$value\",
       \"description\":\"$description\",
-      \"category\":\"terraform\",
+      \"category\":\"$category\",
       \"hcl\":false,
       \"sensitive\":$sensitive
     },
@@ -119,4 +144,13 @@ curl -s \
   --data "$payload" \
   https://$TFE_ADDRESS/api/v2/vars
   echo ""
+fi   
+# Blank values
+error=0
+error_descrip=""
+key=""
+value=""
+category="terraform"
+description="variable"
+sensitive="false"
 done < $f 
