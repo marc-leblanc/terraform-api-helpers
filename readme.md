@@ -34,7 +34,8 @@ Instructions for connecting to VCS
 3. Make note of the OAUTH token
 
 Usage:
-```create_workspace -w {workspace_name} [-o {OAUTH_TOKEN} -r {repo} -f {variable_csv_file}]
+```
+create_workspace -w {workspace_name} [-o {OAUTH_TOKEN} -r {repo} -f {variable_csv_file}]
 ```
 | Option | Description | Required |
 | --- | --- | --- |
