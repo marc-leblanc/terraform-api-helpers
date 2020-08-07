@@ -137,7 +137,7 @@ while read line; do
     }
   }
 }"
-printf "Creating variable $key. \n Result: \n"
+printf "Creating variable $key. \nResult: \n"
 
 curl -s \
   --header "Authorization: Bearer $TFE_API_TOKEN" \
