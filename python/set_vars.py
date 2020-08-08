@@ -38,9 +38,14 @@ def setVars(args):
     with open(args.vars_file) as vfile:
         reader = csv.reader(vfile) # Create a new reader
         for row in reader:
-            print(f'{row[0]}')
+            print(f'Setting variable [bold]{row[0]}[/bold]....')            
             payload={ "data": { "type":"vars", "attributes": { "key":row[0], "value":row[1], "description":row[4], "category":row[3], "hcl":False, "sensitive":row[2] }, "relationships": { "workspace": { "data": { "id":workspace_id, "type":"workspaces" } } } }}
             r = requests.post(set_vars_url, data = json.dumps(payload), headers = headers)
+            if r.ok:
+                print(f':white_check_mark: OK')
+            else:
+                error_response = f'{r.json()["errors"][0]["status"]}: {r.json()["errors"][0]["title"]}: {r.json()["errors"][0]["detail"]}'
+                print(f':x: Problem setting variable.. got: {error_response}')
 
     vfile.close()
 
