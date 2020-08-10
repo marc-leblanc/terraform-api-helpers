@@ -1,17 +1,17 @@
 #! /bin/bash
 
-# Helper script for creating Worskpaces on TFE/TF Cloud via API. 
+# Helper script for creating Worskpaces on TFE/TF Cloud via API.
 #
 # This script can:
 #       - create a workspace
 #       - attach a repo
-#       - set variables on the workspace via set_vars.sh script 
+#       - set variables on the workspace via set_vars.sh script
 #
 # Required environment variables:
 # TFE_ADDRESS = TFE Hostname
 # TFE_API_TOKEN = Your user or Team API token as generated from TFE
 # TFE_ORGANIZATION = The Organization in TFE the workspace is part of
-# 
+#
 # Required input variables
 # -w = workspace name
 # -f = KV file (path/filename)
@@ -22,12 +22,10 @@ set -u
 w=""
 r=""
 o=""
-f="" 
-error=0
-error_descrip=""
+f=""
 
 
-# Get Options 
+# Get Options
 # w = workspace name
 # r = repo (user/repo format)
 # o = oauth token - get with fetch_oauth.sh
@@ -39,10 +37,10 @@ while getopts ":w:f:r:o:" OPT; do
     w )
       w=$OPTARG
       ;;
-    f ) 
+    f )
       f=$OPTARG
       ;;
-    r) 
+    r)
       r=$OPTARG
       ;;
     o )
@@ -61,8 +59,6 @@ while getopts ":w:f:r:o:" OPT; do
   esac
 done
 shift $((OPTIND -1))
-
-
 
 # Check for the TFE Address env variable. Die if not set.
 if [[ -z "${TFE_ADDRESS}" ]]; then
@@ -84,16 +80,13 @@ fi
 
 # Get the Workspace ID
 
-workspace_id=`curl \
-  --header "Authorization: Bearer $TFE_API_TOKEN" \
-  --header "Content-Type: application/vnd.api+json" \
-  https://$TFE_ADDRESS/api/v2/organizations/$TFE_ORGANIZATION/workspaces/$w 2>/dev/null |tac |tac |jq -r '.data.id'`
+workspace_id=$(curl --header "Authorization: Bearer $TFE_API_TOKEN" --header "Content-Type: application/vnd.api+json"   "https://$TFE_ADDRESS/api/v2/organizations/$TFE_ORGANIZATION/workspaces/$w" 2>/dev/null |tac |tac |jq -r '.data.id')
 
 
 
 # Check if we got a workspace ID back
-if [[ $workspace_id != 'null' ]] ; then  
-    printf "Workspace $w already exists in $TFE_ORGANIZATION. Nothing to do. \n"
+if [[ $workspace_id != 'null' ]] ; then
+    printf "Workspace %s already exists in %s. Nothing to do. \n" "$w" "$TFE_ORGANIZATION"
     exit
 fi
 
@@ -107,8 +100,8 @@ if [[ -z $r ]]; then
       \"type\": \"workspaces\"
     }
   }"
-else 
-# Create a VCS backed repo - requires -r for repo and -ot for oauth token 
+else
+# Create a VCS backed repo - requires -r for repo and -ot for oauth token
   payload="{
   \"data\": {
     \"attributes\": {
@@ -124,20 +117,20 @@ else
     },
     \"type\": \"workspaces\"
   }
-  }"  
+  }"
 fi
 
-printf "Creating worskapce  $w. \n Result: \n"
+printf "Creating worskapce  %s. \n Result: \n" "$w"
 
 curl -s \
   --header "Authorization: Bearer $TFE_API_TOKEN" \
   --header "Content-Type: application/vnd.api+json" \
   --request POST \
   --data "$payload" \
-  https://$TFE_ADDRESS/api/v2/organizations/$TFE_ORGANIZATION/workspaces 2>/dev/null
+  "https://$TFE_ADDRESS/api/v2/organizations/$TFE_ORGANIZATION/workspaces" 2>/dev/null
   echo ""
 
 # If file var is set, setup the ars
-if [[ ! -z "$f" ]]; then
-  ./set_vars.sh -w $w -f $f
+if [[ -n "$f" ]] ; then
+  ./set_vars.sh -w "$w" -f "$f"
 fi
