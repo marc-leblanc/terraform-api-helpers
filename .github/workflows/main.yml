@@ -34,7 +34,7 @@ jobs:
         
     steps:
     - uses: actions/checkout@v2
-
+    steps:
     - name: Python Linter
       uses: sunnysid3up/python-linter@master
       with:
