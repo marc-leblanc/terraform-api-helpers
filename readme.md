@@ -5,7 +5,7 @@ This repo contains scripts to help use the Terraform Cloud/Enterprise API.
 **Scripts**
 
 | Script | Description |
-| --- | --- | --- |
+| --- | --- |
 | [create_workspace.sh](#creating-workspaces) | Create Terraform Cloud Workspaces |
 | [set_vars.sh](#setting-variables)  | Set variables on a workspace |
 | [fetch_oauth](#fetch-oauth) | Fetch Organization Oauth information |
