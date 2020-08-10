@@ -5,7 +5,7 @@ import sys
 import requests
 import json
 
-try: 
+try:
     TFE_ADDRESS = os.environ['TFE_ADDRESS']
     TFE_ORGANIZATION = os.environ['TFE_ORGANIZATION']
     TFE_API_TOKEN = os.environ['TFE_API_TOKEN']
@@ -17,11 +17,11 @@ def fetchOauth():
     print(f':wrench: Fetching VCS and oauth information ...')
 
     fetch_oauth_url = f'https://{TFE_ADDRESS}/api/v2/organizations/{TFE_ORGANIZATION}/oauth-clients'
-    
+
     headers = {'Authorization': 'Bearer ' + TFE_API_TOKEN, 'Content-Type': 'application/vnd.api+json'}
 
     r = requests.get(fetch_oauth_url,headers = headers)
-    
+
     if r.status_code == 200:
         print(f':white_check_mark: Pulled VCS information for [bold]{TFE_ORGANIZATION}[/bold] creation completed...')
     else:

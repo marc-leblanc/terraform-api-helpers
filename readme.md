@@ -24,13 +24,13 @@ export TFE_API_TOKEN=***************************
 
 The create workspace is able to:
 
-* Create a basic workspace 
+* Create a basic workspace
 * Create a workspace and attach a VCS Repository
 * Set variables on the newly created workspace
 
 Instructions for connecting to VCS
-1. First you need to use the [fetch_oauth.sh](#fetchoauth) scripts to get the oauth token for the VCS 
-2. Get your repo in the form of **user/repo** or **organization/repo** . The VCS connection **must** have access to this repo. 
+1. First you need to use the [fetch_oauth.sh](#fetchoauth) scripts to get the oauth token for the VCS
+2. Get your repo in the form of **user/repo** or **organization/repo** . The VCS connection **must** have access to this repo.
 3. Make note of the OAUTH token
 
 Usage:
@@ -44,7 +44,7 @@ create_workspace -w {workspace_name} [-o {OAUTH_TOKEN} -r {repo} -f {variable_cs
 | -r | Repo slug in the form of user/repo or organization repo | No |
 | -f | Variable CSV File. See [set_vars instructions](#setvars) for setup | No
 
-## <a name="setvars"></a>Setting Variables 
+## <a name="setvars"></a>Setting Variables
 
 **Usage**
 
@@ -53,11 +53,11 @@ create_workspace -w {workspace_name} [-o {OAUTH_TOKEN} -r {repo} -f {variable_cs
 
 **CSV File Instructions**
 
-In the form of 
+In the form of
 ```
 variable_name([a-z][A-Z][0-9]),value,sensitive(true|false),category(terraform|env),description(string)
 ```
-Example: 
+Example:
 ```
 foo,bar,true,terraform,sensitive terraform variable description
 bar,foo,false,env,not sensivite  environment variable description

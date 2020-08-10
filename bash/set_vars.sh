@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Helper script for setting variables on TFE/TF Cloud via API. 
+# Helper script for setting variables on TFE/TF Cloud via API.
 #
 # This script can:
 #       - set Terraform variables on a workspace
@@ -11,7 +11,7 @@
 # TFE_ADDRESS = TFE Hostname
 # TFE_API_TOKEN = Your user or Team API token as generated from TFE
 # TFE_ORGANIZATION = The Organization in TFE the workspace is part of
-# 
+#
 # Required input variables
 # -w = workspace name
 # -f = KV file (path/filename)
@@ -20,11 +20,11 @@ set -e
 set -u
 
 w=""
-f="" 
+f=""
 error=0
 error_descrip=""
 
-# Get Options 
+# Get Options
 # w = workspace name
 # f = KV file
 while getopts ":w:f:" OPT; do
@@ -33,7 +33,7 @@ while getopts ":w:f:" OPT; do
     w )
       w=$OPTARG
       ;;
-    f ) 
+    f )
       f=$OPTARG
       ;;
     : )
@@ -71,29 +71,30 @@ fi
 
 # Get the Workspace ID
 
-workspace_id=`curl \
+workspace_id=$(curl \
   --header "Authorization: Bearer $TFE_API_TOKEN" \
   --header "Content-Type: application/vnd.api+json" \
-  https://$TFE_ADDRESS/api/v2/organizations/$TFE_ORGANIZATION/workspaces/$w |tac |tac |jq -r '.data.id'`
+  https://"$TFE_ADDRESS"/api/v2/organizations/"$TFE_ORGANIZATION"/workspaces/"$w" |tac |tac |jq -r '.data.id')
 
 
 
 # Check if we got a workspace ID back
-if [[ $workspace_id == 'null' ]] ; then  
-    printf "Workspace $w could not be found in $TFE_ORGANIZATION. Plase double check the workspace name, organization name and access \n"
+if [[ $workspace_id == 'null' ]] ; then
+    printf "Workspace %s could not be found in %s. Plase double check the workspace name, organization name and access \n" "$w" "$TFE_ORGANIZATION"
     exit
 fi
 
 # Loop over csv file
-while read line; do
-  # Parse out values by comma, preserve spaces with +++++ string substitution 
-  set -- `echo $line | sed 's/ /+++++/g' | tr ',' " "`
-  
+while read -r line; do
+  # Parse out values by comma, preserve spaces with +++++ string substitution
+  set -- "$(echo "$line" | sed 's/ /+++++/g' | tr ',' " ")"
+
   key=$1
   value=$2
   sensitive=$3
   category=$4
-  description=`echo $5 |sed 's/+++++/ /g'` #change +++++ back to spaces
+  description=${$5//+++++/ }
+  #$(echo "$5" |sed 's/+++++/ /g') #change +++++ back to spaces
 
   # Data Validation
   if [[ $key =~ ['!@#$%^&*()_+'] ]]; then
@@ -113,7 +114,7 @@ while read line; do
 
   # Create they API payload
   if [[ $error -ne 0 ]]; then
-    printf "Error on key $key: \n$error_descrip \n"
+    printf "Error on key %s: \n%s \n" "$key" "$error_descrip"
   else
 
   payload="{
@@ -137,16 +138,16 @@ while read line; do
     }
   }
 }"
-printf "Creating variable $key. \nResult: \n"
+printf "Creating variable %s. \nResult: \n" "$key"
 
 curl -s \
   --header "Authorization: Bearer $TFE_API_TOKEN" \
   --header "Content-Type: application/vnd.api+json" \
   --request POST \
   --data "$payload" \
-  https://$TFE_ADDRESS/api/v2/vars
+  https://"$TFE_ADDRESS"/api/v2/vars
   echo ""
-fi   
+fi
 # Blank values
 error=0
 error_descrip=""
@@ -155,4 +156,4 @@ value=""
 category="terraform"
 description="variable"
 sensitive="false"
-done < $f 
+done < "$f"

@@ -6,7 +6,7 @@ import requests
 import json
 import csv
 
-try: 
+try:
     TFE_ADDRESS = os.environ['TFE_ADDRESS']
     TFE_ORGANIZATION = os.environ['TFE_ORGANIZATION']
     TFE_API_TOKEN = os.environ['TFE_API_TOKEN']
@@ -20,11 +20,11 @@ def setVars(args):
     set_vars_url = f'https://{TFE_ADDRESS}/api/v2/vars'
 
     headers = {'Authorization': 'Bearer ' + TFE_API_TOKEN, 'Content-Type': 'application/vnd.api+json'}
-    
+
     # Get the Workspace ID/Check if exists
     payload = {'data': { 'attributes': { 'name': args.workspace_name }, 'type': 'workspaces' }}
     r = requests.get(check_workspace_url, headers = headers )
-    
+
     if r.ok:
         print(f':white_check_mark: Got ID for workspace {args.workspace_name}')
     else:
@@ -38,7 +38,7 @@ def setVars(args):
     with open(args.vars_file) as vfile:
         reader = csv.reader(vfile) # Create a new reader
         for row in reader:
-            print(f'Setting variable [bold]{row[0]}[/bold]....')            
+            print(f'Setting variable [bold]{row[0]}[/bold]....')
             payload={ "data": { "type":"vars", "attributes": { "key":row[0], "value":row[1], "description":row[4], "category":row[3], "hcl":False, "sensitive":row[2] }, "relationships": { "workspace": { "data": { "id":workspace_id, "type":"workspaces" } } } }}
             r = requests.post(set_vars_url, data = json.dumps(payload), headers = headers)
             if r.ok:
@@ -55,7 +55,7 @@ def main():
 
     parser.add_argument('--workspace', '-w', dest='workspace_name', required=True,
                         help='sets the name of the workspace to create variables in')
-    parser.add_argument('--file', '-f', dest='vars_file', required=True, 
+    parser.add_argument('--file', '-f', dest='vars_file', required=True,
                         help='sets the variable file to use')
     args = parser.parse_args()
 
