@@ -5,7 +5,7 @@ import sys
 import requests
 import json
 
-try: 
+try:
     TFE_ADDRESS = os.environ['TFE_ADDRESS']
     TFE_ORGANIZATION = os.environ['TFE_ORGANIZATION']
     TFE_API_TOKEN = os.environ['TFE_API_TOKEN']
@@ -17,10 +17,10 @@ def createWorkspace(args):
     print(f':wrench: Creating Terraform Workspace [bold]{args.workspace_name}[/bold]...')
 
     create_workspace_url = f'https://{TFE_ADDRESS}/api/v2/organizations/{TFE_ORGANIZATION}/workspaces'
-    
+
     headers = {'Authorization': 'Bearer ' + TFE_API_TOKEN, 'Content-Type': 'application/vnd.api+json'}
     payload = {'data': { 'attributes': { 'name': args.workspace_name }, 'type': 'workspaces' }}
-    
+
     r = requests.post(create_workspace_url, data = json.dumps(payload), headers = headers)
 
     if r.status_code == 201:
@@ -35,7 +35,7 @@ def main():
 
     parser.add_argument('--workspace', '-w', dest='workspace_name', required=True,
                         help='sets the name of the workspace to create')
-    
+
     args = parser.parse_args()
 
     createWorkspace(args)
