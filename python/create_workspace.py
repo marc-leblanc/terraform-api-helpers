@@ -47,10 +47,10 @@ def main():
     parser.add_argument('--repo', '-r', dest='repo', default=0,
                         help='(optional) specify version of Terraform for the workspace')
 
-    parser.add_argument('--wd', '-d', dest='working_dir',
+    parser.add_argument('--working-dir', '-d', dest='working_dir',
                         help='(optional) specify version of Terraform for the workspace')
 
-    parser.add_argument('--ot', '-o', dest='oauth_token',
+    parser.add_argument('--oauth-token', '-o', dest='oauth_token',
                         help='(optional) specify version of Terraform for the workspace')
 
     args = parser.parse_args()

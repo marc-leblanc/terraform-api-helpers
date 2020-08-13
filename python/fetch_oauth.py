@@ -31,7 +31,7 @@ def fetchOauth():
     for vcs in r.json()["data"]:
         print(f'[bold]Name:[/bold] {vcs["attributes"]["name"]}')
         print(f'[bold]ID:[/bold] {vcs["id"]}')
-        print(f'[bold]Token[/bold] {vcs["relationships"]["oauth-tokens"]["data"][0]["id"]}')
+        print(f'[bold green]Token[/bold green] {vcs["relationships"]["oauth-tokens"]["data"][0]["id"]}')
 
 def main():
 
