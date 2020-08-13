@@ -66,3 +66,12 @@ bard,food,false,env,not sensivite variable description
 ```
 
 [Example File](kv_sample.txt)
+
+## Credential Setting
+
+Caveat, there are better ways to handle this - Vault, KMS, etc. That being said, this is a quick and easy way to copy your local platform credentials for GCP to a specified workspace. This requires you have a **GOOGLE_CREDENTIALS** environment variable set.
+
+| Argument | Description | Required |
+| --- | --- | --- |
+| --workspace/-w | Workspace name in Terraform Cloud/Enterprise | Yes |
+| --gcp | Flag to indicate copying GOOGLE_CREDENTIALS | No |
