@@ -11,7 +11,7 @@ This repo provides helper scripts to work with Terraform Cloud/Enterprise API.
 | set_var.py | Sets variables on a workspace using a CSV file |
 | fetch_oauth.py | Fetches oauth information required to create workspaces |
 | create_workspace.py | Creates a Workspace, connects to a VCS repo, sets working directory |
-| credential_copy.py | Can copy GOOGLE_CREDENTIALS local environment variable to a workspace |
+| credential_copy.py | Can copy local environment variable credentials to a workspace. Supported **--gcp**, **--github_pat** |
 
 
 ## [Bash](./bash)

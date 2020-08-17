@@ -40,6 +40,13 @@ def setVars(args):
         except KeyError:
             print (f':exploding_head: [bold red]Error:[/bold red] GOOGLE_CREDENTIALS environment variable must be set')
             sys.exit(1)
+    elif args.github:
+        cred = "GITHUB_PAT"
+        try:
+            CREDENTIALS = os.environ['GITHUB_PAT']
+        except KeyError:
+            print(f':exploding_head: [bold red]Error:[/bold red]GITHUB_PAT environment variable must be set')
+            sys.exit(1)
     else:
         print(f'[bold red]Error:[/bold red] No Credential type indicated')
         sys.exit(1)
@@ -57,9 +64,11 @@ def main():
     parser = argparse.ArgumentParser(description='Process arguments.')
 
     parser.add_argument('--workspace', '-w', dest='workspace_name', required=True,
-                        help='sets the name of the workspace to create variables in')
+                        help='Workspace to copy the credential to')
     parser.add_argument('--gcp', action='store_true',
                         help='Yes to copy GOOGLE_CREDENTIALS')
+    parser.add_argument('--github', action='store_true',
+                        help='Yes to copy GITHUB_PAT')
     args = parser.parse_args()
 
     setVars(args)
