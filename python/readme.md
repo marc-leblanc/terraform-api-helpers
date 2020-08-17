@@ -75,3 +75,4 @@ Caveat, there are better ways to handle this - Vault, KMS, etc. That being said,
 | --- | --- | --- |
 | --workspace/-w | Workspace name in Terraform Cloud/Enterprise | Yes |
 | --gcp | Flag to indicate copying GOOGLE_CREDENTIALS | No |
+| --github | Flag to indicate copying GITHUB_PAT | No
