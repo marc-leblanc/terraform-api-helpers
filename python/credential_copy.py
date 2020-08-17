@@ -41,7 +41,7 @@ def setVars(args):
             print (f':exploding_head: [bold red]Error:[/bold red] GOOGLE_CREDENTIALS environment variable must be set')
             sys.exit(1)
     elif args.github:
-        cred = "GITHUB_PAT"
+        cred = "TF_VAR_GITHUB_PAT"
         try:
             CREDENTIALS = os.environ['GITHUB_PAT']
         except KeyError:
