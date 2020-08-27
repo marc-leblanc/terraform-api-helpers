@@ -17,21 +17,42 @@ ID: oc-zasdasdasdJJJJJJJJ
 Token ot-Yt5vw7NnNnNnNnNn
 ```
 
-## Create Workspaces
+## Workspaces
 
-**create_workspace.py** provides the ability to quickly create and configure a workspace in Terraform Cloud/Enterprise. Workspaces have the option of specifying the version of Terraform, attaching to a VCS Repository and setting a working directory.
+**workspaces.py** provides the ability to quickly create and configure a workspace in Terraform Cloud/Enterprise. Workspaces have the option of specifying the version of Terraform, attaching to a VCS Repository and setting a working directory. Can also list existing workspaces and related information.
 
 
 ```
-usage: create_workspace.py [-h] --workspace WORKSPACE_NAME
-                           [--tf-version TF_VERSION] [--repo REPO]
-                           [--working-dir WORKING_DIR]
-                           [--oauth-token OAUTH_TOKEN]
+usage: workspaces.py [-h] [--workspace WORKSPACE_NAME]
+                     [--tf-version TF_VERSION] [--repo REPO]
+                     [--working-dir WORKING_DIR] [--oauth-token OAUTH_TOKEN]
+                     [--list] [--create]
+
+Process workspace arguments.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --workspace WORKSPACE_NAME, -w WORKSPACE_NAME
+                        sets the name of the workspace to create
+  --tf-version TF_VERSION, -t TF_VERSION
+                        (optional) specify version of Terraform for the
+                        workspace
+  --repo REPO, -r REPO  (optional) specify version of Terraform for the
+                        workspace
+  --working-dir WORKING_DIR, -d WORKING_DIR
+                        (optional) specify version of Terraform for the
+                        workspace
+  --oauth-token OAUTH_TOKEN, -o OAUTH_TOKEN
+                        (optional) specify version of Terraform for the
+                        workspace
+  --list                List workspaces for the Organization
+  --create              Create a workspace for the Organization
 ```
 
 
 | Argument | Description | Required |
 | --- | --- | --- |
+| --create | Create a Workspace | No | 
 | -w, --workspace | Workspace name | Yes |
 | -t, --tf-version | Requested Terraform Version. Defaults to latest available on Terraform Cloud/Enterprise | No |
 | -r, --repo | Repository for VCS connection. Format of *user/repo* or *organization/repo* | No |
