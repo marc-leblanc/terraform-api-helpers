@@ -35,14 +35,14 @@ def createWorkspace(args):
         print(f'[red]:x:[/red] Workspace [bold]{args.workspace_name}[/bold] creation failed.. got: {error_response}')
 
 # Function: listWorkspaces()
-#           Simply lists the workspaces for the organization, shows the vcs repo if attached, the working 
+#           Simply lists the workspaces for the organization, shows the vcs repo if attached, the working
 #           directory if set and the date created
 
 def listWorkspaces():
     ls_url = f'https://{TFE_ADDRESS}/api/v2/organizations/{TFE_ORGANIZATION}/workspaces'
     headers = {'Authorization': 'Bearer ' + TFE_API_TOKEN, 'Content-Type': 'application/vnd.api+json'}
     r = requests.get(ls_url,headers = headers)
-    
+
     if r.ok:
         t = PrettyTable([f'[bold]Workspace Name[/bold]', 'VCS Repo', 'Working Directory', 'Date Created'])
         t.align = "l"
