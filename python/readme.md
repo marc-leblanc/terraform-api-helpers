@@ -52,7 +52,7 @@ optional arguments:
 
 | Argument | Description | Required |
 | --- | --- | --- |
-| --create | Create a Workspace | No | 
+| --create | Create a Workspace | No |
 | -w, --workspace | Workspace name | Yes |
 | -t, --tf-version | Requested Terraform Version. Defaults to latest available on Terraform Cloud/Enterprise | No |
 | -r, --repo | Repository for VCS connection. Format of *user/repo* or *organization/repo* | No |
