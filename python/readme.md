@@ -28,9 +28,10 @@ uusage: workspaces.py [-h] {create,list} ...
 Process workspace arguments.
 
 positional arguments:
-  {create,list}
-    create       Create a workspace
-    list         List workspaces
+  {create,list,runs}
+    create            Create a workspace
+    list              List workspaces
+    runs              Interact with runs on a workspace
 
 create [-h] --workspace WORKSPACE_NAME
                             [--tf-version TF_VERSION] [--repo REPO]
@@ -48,6 +49,14 @@ optional arguments:
                         specify the working directory
   --oauth-token OAUTH_TOKEN, -o OAUTH_TOKEN
                         oauth token required to attach VCS repo
+
+runs [-h] --workspace WORKSPACE_NAME [--list]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --workspace WORKSPACE_NAME, -w WORKSPACE_NAME
+                        workspace name to interact with
+  --list, -l            list runs for the workspace
 
 ```
 

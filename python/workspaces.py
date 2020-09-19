@@ -58,8 +58,40 @@ def listWorkspaces():
             t.add_row([name, vcsRepo, workingDir, dateCreated])
         print(t)
     else:
-        print (r.json())
-        error_response = f'{r.json()["errors"][0]["title"]}: {r.json()["errors"][0]["detail"]}'
+        print (f'{r.json()["errors"][0]["title"]}: {r.json()["errors"][0]["detail"]}')
+
+# Function: runs()
+#           Interacts with the workspace runs API. List runs and their status.
+
+def runs(args):
+    headers = {'Authorization': 'Bearer ' + TFE_API_TOKEN, 'Content-Type': 'application/vnd.api+json'}
+    if args.list:
+        ws_url = f'https://{TFE_ADDRESS}/api/v2/organizations/{TFE_ORGANIZATION}/workspaces/{args.workspace_name}'
+        r = requests.get(ws_url,headers = headers)
+        if r.ok:
+            wsid = r.json()['data']['id']
+        else:
+            print (f'{r.json()["errors"][0]["title"]}: {r.json()["errors"][0]["detail"]}')
+
+        t = PrettyTable(['Run ID', 'Status', 'Message', 'Date Created'])
+        t.align = "l"
+        run_url = f'https://{TFE_ADDRESS}/api/v2/workspaces/{wsid}/runs'
+        r = requests.get(run_url,headers = headers)
+
+        runs = r.json()['data']
+        for run in runs:
+            runid = run['id']
+            runstatus= run['attributes']['status']
+            runmessage = run['attributes']['message']
+            runcreatedat = run['attributes']['created-at']
+            #print( f'{runid} : {runstatus} : {runmessage}' )
+            t.add_row([runid, runstatus, runmessage, runcreatedat])
+        print(t)
+
+
+
+
+
 
 def main():
     parser = argparse.ArgumentParser(description='Process workspace arguments.')
@@ -79,12 +111,20 @@ def main():
 
     listWS = subparsers.add_parser('list', help='List workspaces')
 
+    runsWS = subparsers.add_parser('runs', help='Interact with runs on a workspace')
+    runsWS.add_argument('--workspace', '-w', dest='workspace_name', required=True,
+                            help='workspace name to interact with')
+    runsWS.add_argument('--list', '-l', action='store_true',
+                        help='list runs for the workspace')
+
     args = parser.parse_args()
 
     if(args.command == 'list'):
         listWorkspaces()
     elif(args.command == 'create'):
         createWorkspace(args)
+    elif(args.command == 'runs'):
+        runs(args)
 
 if __name__ == "__main__":
     main()
