@@ -63,7 +63,7 @@ def listWorkspaces():
 
 def main():
     parser = argparse.ArgumentParser(description='Process workspace arguments.')
-    
+
     subparsers = parser.add_subparsers(dest='command')
     createWS = subparsers.add_parser('create', help="Create a workspace")
     createWS.add_argument('--workspace','-w', dest='workspace_name', required=True,
@@ -71,14 +71,14 @@ def main():
     createWS.add_argument('--tf-version', dest='tf_version',
                             help='specify the version of Terraform for the workspace')
     createWS.add_argument('--repo','-r', dest='repo',default=0,
-                            help='attach a VCS repository to the workspace')                     
+                            help='attach a VCS repository to the workspace')
     createWS.add_argument('--working-dir','-d',dest='working_dir',
                             help='specify the working directory')
     createWS.add_argument('--oauth-token','-o', dest='oauth_token',
                             help='oauth token required to attach VCS repo')
-    
+
     listWS = subparsers.add_parser('list', help='List workspaces')
-    
+
     args = parser.parse_args()
 
     if(args.command == 'list'):
