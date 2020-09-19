@@ -72,12 +72,12 @@ def runs(args):
             wsid = r.json()['data']['id']
         else:
             print (f'{r.json()["errors"][0]["title"]}: {r.json()["errors"][0]["detail"]}')
-        
+
         t = PrettyTable(['Run ID', 'Status', 'Message', 'Date Created'])
         t.align = "l"
         run_url = f'https://{TFE_ADDRESS}/api/v2/workspaces/{wsid}/runs'
         r = requests.get(run_url,headers = headers)
-        
+
         runs = r.json()['data']
         for run in runs:
             runid = run['id']
@@ -114,7 +114,7 @@ def main():
     runsWS = subparsers.add_parser('runs', help='Interact with runs on a workspace')
     runsWS.add_argument('--workspace', '-w', dest='workspace_name', required=True,
                             help='workspace name to interact with')
-    runsWS.add_argument('--list', '-l', action='store_true', 
+    runsWS.add_argument('--list', '-l', action='store_true',
                         help='list runs for the workspace')
 
     args = parser.parse_args()
