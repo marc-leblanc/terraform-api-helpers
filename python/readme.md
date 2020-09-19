@@ -23,36 +23,38 @@ Token ot-Yt5vw7NnNnNnNnNn
 
 
 ```
-usage: workspaces.py [-h] [--workspace WORKSPACE_NAME]
-                     [--tf-version TF_VERSION] [--repo REPO]
-                     [--working-dir WORKING_DIR] [--oauth-token OAUTH_TOKEN]
-                     [--list] [--create]
+uusage: workspaces.py [-h] {create,list} ...
 
 Process workspace arguments.
+
+positional arguments:
+  {create,list}
+    create       Create a workspace
+    list         List workspaces
+
+create [-h] --workspace WORKSPACE_NAME
+                            [--tf-version TF_VERSION] [--repo REPO]
+                            [--working-dir WORKING_DIR]
+                            [--oauth-token OAUTH_TOKEN]
 
 optional arguments:
   -h, --help            show this help message and exit
   --workspace WORKSPACE_NAME, -w WORKSPACE_NAME
                         sets the name of the workspace to create
-  --tf-version TF_VERSION, -t TF_VERSION
-                        (optional) specify version of Terraform for the
-                        workspace
-  --repo REPO, -r REPO  (optional) specify version of Terraform for the
-                        workspace
+  --tf-version TF_VERSION
+                        specify the version of Terraform for the workspace
+  --repo REPO, -r REPO  attach a VCS repository to the workspace
   --working-dir WORKING_DIR, -d WORKING_DIR
-                        (optional) specify version of Terraform for the
-                        workspace
+                        specify the working directory
   --oauth-token OAUTH_TOKEN, -o OAUTH_TOKEN
-                        (optional) specify version of Terraform for the
-                        workspace
-  --list                List workspaces for the Organization
-  --create              Create a workspace for the Organization
+                        oauth token required to attach VCS repo
+
 ```
 
 
 | Argument | Description | Required |
 | --- | --- | --- |
-| --create | Create a Workspace | No |
+| create | Create a Workspace | No |
 | -w, --workspace | Workspace name | Yes |
 | -t, --tf-version | Requested Terraform Version. Defaults to latest available on Terraform Cloud/Enterprise | No |
 | -r, --repo | Repository for VCS connection. Format of *user/repo* or *organization/repo* | No |

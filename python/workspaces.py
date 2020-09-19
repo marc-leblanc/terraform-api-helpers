@@ -44,7 +44,7 @@ def listWorkspaces():
     r = requests.get(ls_url,headers = headers)
 
     if r.ok:
-        t = PrettyTable([f'[bold]Workspace Name[/bold]', 'VCS Repo', 'Working Directory', 'Date Created'])
+        t = PrettyTable(['Workspace Name', 'VCS Repo', 'Working Directory', 'Date Created'])
         t.align = "l"
         workspaces = r.json()["data"]
         for workspace in workspaces:
@@ -64,25 +64,26 @@ def listWorkspaces():
 def main():
     parser = argparse.ArgumentParser(description='Process workspace arguments.')
 
-    parser.add_argument('--workspace', '-w', dest='workspace_name',
-                        help='sets the name of the workspace to create')
-    parser.add_argument('--tf-version', '-t', dest='tf_version',
-                        help='(optional) specify version of Terraform for the workspace')
-    parser.add_argument('--repo', '-r', dest='repo', default=0,
-                        help='(optional) specify version of Terraform for the workspace')
-    parser.add_argument('--working-dir', '-d', dest='working_dir',
-                        help='(optional) specify version of Terraform for the workspace')
-    parser.add_argument('--oauth-token', '-o', dest='oauth_token',
-                        help='(optional) specify version of Terraform for the workspace')
-    parser.add_argument('--list', action='store_true',
-                        help='List workspaces for the Organization')
-    parser.add_argument('--create', action='store_true',
-                        help='Create a workspace for the Organization')
+    subparsers = parser.add_subparsers(dest='command')
+    createWS = subparsers.add_parser('create', help="Create a workspace")
+    createWS.add_argument('--workspace','-w', dest='workspace_name', required=True,
+                            help='sets the name of the workspace to create')
+    createWS.add_argument('--tf-version', dest='tf_version',
+                            help='specify the version of Terraform for the workspace')
+    createWS.add_argument('--repo','-r', dest='repo',default=0,
+                            help='attach a VCS repository to the workspace')
+    createWS.add_argument('--working-dir','-d',dest='working_dir',
+                            help='specify the working directory')
+    createWS.add_argument('--oauth-token','-o', dest='oauth_token',
+                            help='oauth token required to attach VCS repo')
+
+    listWS = subparsers.add_parser('list', help='List workspaces')
+
     args = parser.parse_args()
 
-    if(args.list):
+    if(args.command == 'list'):
         listWorkspaces()
-    elif(args.create):
+    elif(args.command == 'create'):
         createWorkspace(args)
 
 if __name__ == "__main__":
